@@ -1,0 +1,152 @@
+// keyframes
+$default-font-size: 16px;
+$equlion-color: #0d6efd;
+$animation-time: 0.5s;
+// mixins
+@mixin size($width, $height) {
+  height: $height;
+  width: $width;
+}
+
+@mixin square-size($value) {
+  @include size($value, $value);
+}
+
+@mixin border($size: 0, $type: solid, $color: $equlion-color, $radius: 0) {
+  border: 0;
+  @if $size>0 {
+    border: $size $type $color;
+  }
+  @if $radius>0 {
+    border-radius: $radius;
+  }
+}
+@keyframes button-equlion-animation {
+    from {
+      top: 50%;
+      @include size(10em, 10em);
+    }
+    to {
+      top: -3em;
+      @include size(6em, 6em);
+    }
+  }
+
+  @mixin position(
+  $type: relative,
+  $top: auto,
+  $bottom: auto,
+  $left: auto,
+  $right: auto
+) {
+  position: $type;
+  @if $type==absolute {
+    bottom: $bottom;
+    left: $left;
+    right: $right;
+    top: $top;
+  }
+}
+  
+  @keyframes login-fadein {
+    0% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes login-border-animation {
+    to {
+      stroke-dasharray: 100%;
+      stroke-dashoffset: 0;
+    }
+  }
+  
+  // reset
+  
+  // styles
+  .main-login {
+    @include position();
+    margin-top: 12vh;
+  }
+  
+  %login-item {
+    min-width: 250px;
+    font-size: $default-font-size;
+  
+    margin: 0.4em auto;
+    padding: 0.8em;
+    width: 90%;
+    box-sizing: border-box;
+  }
+  
+  .login {
+    width: 400px;
+    height: 370px;
+    box-sizing: border-box;
+    margin: auto;
+    @include position(relative);
+    @include border($radius: 5px);
+  
+    &-sides {
+      @include square-size(100%);
+      @include position(
+        $type: absolute,
+        $top: 0,
+        $left: 0,
+        $right: 0,
+        $bottom: 0
+      );
+      @include border($radius: 5px);
+      line {
+        fill: none;
+        stroke: $equlion-color;
+        stroke-dasharray: 100%;
+        stroke-dashoffset: 100%;
+        stroke-linecap: round;
+        stroke-width: 3;
+        animation: login-border-animation $animation-time forwards;
+        &.first {
+          animation-delay: $animation-time;
+        }
+        &.second {
+          animation-delay: $animation-time + 0.25s;
+        }
+        &.third {
+          animation-delay: $animation-time * 2;
+        }
+      }
+    }
+  
+    &-fieldset {
+      animation: login-fadein $animation-time ease-in-out forwards;
+      animation-delay: $animation-time;
+      box-sizing: border-box;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: space-between;
+      padding: 4em 0;
+      opacity: 0;
+      font-size: $default-font-size;
+  
+      &-field {
+        @extend %login-item;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+        @include border($size: 1px, $color: #f2f2f2);
+        font-size: $default-font-size;
+      }
+      &-submit {
+        @extend %login-item;
+        background-color: $equlion-color;
+        box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-weight: bold;
+        @include border($radius: 3px);
+      }
+    }
+  }
